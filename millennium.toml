@@ -4,7 +4,7 @@
 [plugin]
 id = "com.hoangpm14.price-history"
 name = "Price History"
-version = "1.0.0"
+version = "1.0.1"
 author = "hoangpm14"
 description = "Adds a Price History button to Steam store game pages that shows the game's Steam price history in your region's currency (via IsThereAnyDeal)."
 

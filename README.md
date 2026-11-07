@@ -40,13 +40,17 @@ plugin for Decky Loader on the Steam Deck.
 5. Add an IsThereAnyDeal API key (needed for the history; the current price works
    without one):
    1. Sign in at https://isthereanydeal.com and open https://isthereanydeal.com/apps/my/
+      (the **Get a free key** button in the plugin's settings panel opens it too).
    2. Register an app (any name) and copy its **API key**.
    3. Steam menu → **Millennium Library Manager** → **Price History** → paste the
       key → **Save key** (the plugin checks the key before saving it).
 6. Open any game's store page and click **Price History** (bottom right).
 
 The same panel has **Prices for** (region override; "Automatic" uses your Steam
-store region) and **Willing to wait**.
+store region) and **Willing to wait** (how long you'd wait for a sale; the
+verdict says whether one is likely within that time).
+
+<img src="docs/settings.png" width="300" alt="The plugin's settings panel: How to use, Prices for (Automatic), Willing to wait (1 month), the IsThereAnyDeal API key shown as dots, and the Save key and Get a free key buttons">
 
 Some regions (e.g. Vietnam, Mexico, Switzerland) have no IsThereAnyDeal history
 in their own currency. There the plugin applies past sale dates and discounts to
@@ -84,7 +88,8 @@ The log doesn't contain your API key, but check it before attaching it anyway.
   Nothing else is sent, and nothing goes anywhere else. No analytics or tracking.
 - **Your API key** is added by the plugin's backend (which runs on your PC, outside
   the web page), so Steam's web pages never see it. It's sent only to
-  IsThereAnyDeal.
+  IsThereAnyDeal. The settings panel shows it as dots, so it stays out of
+  screenshots and screen shares.
 - **Where settings are stored:** in Millennium's config file
   (`<Steam folder>\millennium\config\config.json` on Windows), including the API
   key **in plain text**. Don't share that file. To remove the key, clear it in

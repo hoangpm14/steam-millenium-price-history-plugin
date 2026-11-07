@@ -15,14 +15,29 @@ import {
 import { check, log } from "../common/health";
 import { decodeBackendJson } from "../common/backend-json";
 
+// The key box: dots instead of the key, and the full width of the panel.
+const KEY_FIELD_CSS =
+  ".price-history-key-field, .price-history-key-field * { width: 100%; box-sizing: border-box; }" +
+  ".price-history-key-field input { -webkit-text-security: disc; }";
+// Steam's own button padding doesn't apply in this panel (the width is kept by Steam).
+const BUTTON_STYLE = { width: "100%", padding: "10px 16px", boxSizing: "border-box" } as const;
+
 const regionName = (code: string) => REGIONS.find(([c]) => c === code)?.[1] ?? code;
 
 // Opens a web page in the computer's browser (Steam's internal function).
-function openInBrowser(url: string) {
-  const open = (window as any).SteamClient?.System?.OpenInSystemBrowser;
-  if (check("Steam's open-in-browser function (SteamClient.System.OpenInSystemBrowser)", typeof open === "function")) {
-    open(url);
+// It must be called on SteamClient.System: copied into a variable and called
+// on its own, Steam throws "Unknown method" and nothing opens. Returns false
+// if it couldn't, so the panel can show the address instead.
+function openInBrowser(url: string): boolean {
+  const system = (window as any).SteamClient?.System;
+  let error = "";
+  try {
+    if (typeof system?.OpenInSystemBrowser !== "function") error = "function not found";
+    else system.OpenInSystemBrowser(url);
+  } catch (e) {
+    error = String(e);
   }
+  return check("Steam's open-in-browser function (SteamClient.System.OpenInSystemBrowser)", !error, error);
 }
 
 async function logSteamVersion() {
@@ -76,6 +91,7 @@ function RegionSetting({ settings, reload }: { settings: Settings; reload: () =>
   return (
     <Field
       label="Prices for"
+      childrenLayout="below"
       description={
         error ??
         (detected
@@ -103,6 +119,7 @@ function WaitSetting({ settings, reload }: { settings: Settings; reload: () => v
   return (
     <Field
       label="Willing to wait"
+      childrenLayout="below"
       description={
         error ??
         'For games at full price: is a sale likely within this time? Longer times make most games say "likely".'
@@ -169,15 +186,35 @@ function ApiKeySetting({ reload }: { reload: () => void }) {
     <>
       <Field
         label="IsThereAnyDeal API key"
+        childrenLayout="below"
         description={message ?? (saved ? "Saved" : "Needed for the price history and lowest price")}
       >
-        <TextField value={draft} onChange={(e) => setDraft((e.target as HTMLInputElement).value)} />
+        {/* Shown as dots, so the key doesn't end up in screenshots or on screen
+            shares. Steam ignores TextField's bIsPassword here, so CSS does it. */}
+        <style>{KEY_FIELD_CSS}</style>
+        <div className="price-history-key-field">
+          <TextField bIsPassword value={draft} onChange={(e) => setDraft((e.target as HTMLInputElement).value)} />
+        </div>
       </Field>
-      <Field>
-        <DialogButton disabled={busy || draft.trim() === (saved ?? "")} onClick={save}>
-          Save key
-        </DialogButton>
-        <DialogButton onClick={() => openInBrowser(ITAD_APPS_URL)}>Get a free key</DialogButton>
+      <Field childrenLayout="below">
+        {/* Stacked: side by side they don't fit the narrow panel. */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+          <DialogButton style={BUTTON_STYLE} disabled={busy || draft.trim() === (saved ?? "")} onClick={save}>
+            Save key
+          </DialogButton>
+          <DialogButton
+            style={BUTTON_STYLE}
+            onClick={() =>
+              setMessage(
+                openInBrowser(ITAD_APPS_URL)
+                  ? "Opened isthereanydeal.com in your browser: register an app there and copy its API key."
+                  : `Couldn't open your browser. Go to ${ITAD_APPS_URL}, register an app and copy its API key.`
+              )
+            }
+          >
+            Get a free key
+          </DialogButton>
+        </div>
       </Field>
     </>
   );

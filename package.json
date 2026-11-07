@@ -1,6 +1,6 @@
 {
   "name": "price-history-millennium",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "Millennium (desktop Steam) port of the Price History Decky plugin",
   "author": "hoangpm14",
