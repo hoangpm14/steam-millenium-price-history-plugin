@@ -1,0 +1,21 @@
+{
+  "name": "price-history-millennium",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Millennium (desktop Steam) port of the Price History Decky plugin",
+  "author": "hoangpm14",
+  "license": "BSD-3-Clause",
+  "scripts": {
+    "build": "node -e \"require('fs').mkdirSync('dist',{recursive:true})\" && starlight pack --release",
+    "build:debug": "node -e \"require('fs').mkdirSync('dist',{recursive:true})\" && starlight pack --debug",
+    "dev": "starlight watch",
+    "typecheck": "tsc -p frontend --noEmit && tsc -p webview --noEmit",
+    "prepare": "starlight lsp"
+  },
+  "devDependencies": {
+    "@steambrew/starlight": "1.1.3",
+    "@types/react": "19.1.1",
+    "@types/react-dom": "19.1.1",
+    "typescript": "5.9.3"
+  }
+}

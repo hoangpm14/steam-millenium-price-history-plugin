@@ -1,0 +1,32 @@
+# Millennium plugin config (read by starlight, Millennium's plugin compiler).
+# Reference: https://docs.steambrew.app/plugins/structure/config
+
+[plugin]
+id = "com.hoangpm14.price-history"
+name = "Price History"
+version = "1.0.0"
+author = "hoangpm14"
+description = "Adds a Price History button to Steam store game pages that shows the game's Steam price history in your region's currency (via IsThereAnyDeal)."
+
+[backend]
+entry = "backend/main.lua"
+sources = ["backend/**/*.lua"]
+
+# Settings panel (Steam menu → Millennium Library Manager → Price History).
+[frontend]
+entry = "frontend/index.tsx"
+
+# Runs in Steam's web pages; adds the button and dialog on store game pages.
+[webkit]
+entry = "webview/preload.ts"
+
+[compiler]
+# Build into dist/ here. Copy the .star file into Millennium's plugins folder
+# (Windows: <Steam folder>\millennium\plugins\), or set this to "auto" to have
+# the build install it there directly on a PC with Millennium.
+output_path = "dist/com.hoangpm14.price-history.star"
+
+[logger]
+backend_prefix  = "BCK"
+frontend_prefix = "FRT"
+webview_prefix  = "WEB"
