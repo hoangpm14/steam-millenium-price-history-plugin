@@ -16,6 +16,14 @@ Price history comes from [IsThereAnyDeal](https://isthereanydeal.com) (free API
 key needed); the current price comes from Steam. It's a port of my Price History
 plugin for Decky Loader on the Steam Deck.
 
+![The Price History dialog on a Steam store page: a "Wait: a sale is likely within a month" verdict, the price table and a 6-month price chart](docs/screenshot.png)
+
+## Tested on
+
+- Millennium 3.6.2 on Windows 11 (desktop Steam).
+- Linux is expected to work (Millennium supports it and the plugin has nothing
+  Windows-specific), but it hasn't been tested yet. Reports welcome.
+
 ## Install
 
 1. Install **Millennium 3.4 or newer**: follow the steps for your OS at
@@ -55,6 +63,41 @@ today's full price and labels the history "estimated".
   a Steam update), it's listed at the top of the plugin's settings panel and in the log.
 - **No button:** check the plugin is turned on and that Steam was fully restarted
   after copying the file.
+
+### Reporting a problem
+
+Open an issue at
+https://github.com/hoangpm14/steam-millenium-price-history-plugin/issues with:
+
+- what you did and what happened (a screenshot helps)
+- your OS and Millennium version
+- `price-history.log` (see above) and anything listed under "Problem found" in
+  the plugin's settings panel
+
+The log doesn't contain your API key, but check it before attaching it anyway.
+
+## Privacy
+
+- **What's sent where:** to show a game's prices, the plugin sends the game's
+  Steam app ID and your store country to IsThereAnyDeal's API and to Steam's
+  store API, along with what any web request carries (such as your IP address).
+  Nothing else is sent, and nothing goes anywhere else. No analytics or tracking.
+- **Your API key** is added by the plugin's backend (which runs on your PC, outside
+  the web page), so Steam's web pages never see it. It's sent only to
+  IsThereAnyDeal.
+- **Where settings are stored:** in Millennium's config file
+  (`<Steam folder>\millennium\config\config.json` on Windows), including the API
+  key **in plain text**. Don't share that file. To remove the key, clear it in
+  the plugin's settings panel and press **Save key**.
+- **Cache:** answers are kept in memory for 10 minutes and are gone when Steam
+  closes. The log file stays on your PC.
+
+## Disclaimer
+
+This is an unofficial, community-made plugin. It isn't affiliated with or
+endorsed by Valve, Steam, IsThereAnyDeal or the Millennium project. Prices and
+sale guesses can be wrong; the sale guess is based on a game's past sales, not
+on any announcement.
 
 ## Build from source
 
